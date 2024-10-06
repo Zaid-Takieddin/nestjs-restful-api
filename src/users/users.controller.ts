@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -25,7 +26,9 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
+    const user = this.usersService.findOne(id);
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 
   @Post()
